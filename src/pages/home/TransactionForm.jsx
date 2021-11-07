@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useAddDoc from '../../hooks/useFirestore';
+import { useAddDoc } from '../../hooks/useFirestore';
 
 export default function TransactionForm({ uid }) {
   const [formData, setFormData] = useState({
