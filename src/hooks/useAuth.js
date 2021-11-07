@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LOGIN, LOGOUT } from '../contexts/constants';
 import { auth } from '../firebase/config';
@@ -85,9 +85,11 @@ export function useSignUp() {
 
 export function useLogout() {
   const { dispatch } = useAuthContext();
+  const queryClient = useQueryClient();
 
   return useMutation(logout, {
     onSuccess: () => {
+      queryClient.removeQueries();
       dispatch({
         type: LOGOUT,
       });

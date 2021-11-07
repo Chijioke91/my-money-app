@@ -3,6 +3,7 @@ import { db, timestamp } from '../firebase/config';
 
 export function useAddDoc(collection) {
   const ref = db.collection(collection);
+  const queryClient = useQueryClient();
 
   const addDocument = async (doc) => {
     try {
@@ -13,19 +14,27 @@ export function useAddDoc(collection) {
     }
   };
 
-  return useMutation(addDocument);
+  return useMutation(addDocument, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(collection);
+    },
+  });
 }
 
-export function useCollection(collection) {
-  const ref = db.collection(collection);
+export function useCollection(collection, query) {
+  let ref = db.collection(collection);
   const queryClient = useQueryClient();
 
   const fetchDocs = async () => {
     try {
+      if (query) {
+        ref = ref.where(...query);
+      }
+
       const snapshots = await ref.get();
 
       if (snapshots.empty) {
-        throw new Error('Could not fetch recipes');
+        throw new Error(`Sorry, you do not have any ${collection}`);
       }
 
       let results = [];
@@ -44,5 +53,6 @@ export function useCollection(collection) {
     onSuccess: () => {
       queryClient.invalidateQueries(collection);
     },
+    retry: 1,
   });
 }

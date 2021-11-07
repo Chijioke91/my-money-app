@@ -12,16 +12,15 @@ export default function Home() {
     error,
     isError,
     isLoading,
-  } = useCollection('transactions');
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  } = useCollection('transactions', ['uid', '==', user.uid]);
 
   return (
     <div className={styles.container}>
-      {isError && <p>{error.message}</p>}
-      {transactions && <TransactionList transactions={transactions} />}
+      <div className={styles.content}>
+        {isLoading && <p>Loading...</p>}
+        {isError && <p>{error.message}</p>}
+        {transactions && <TransactionList transactions={transactions} />}
+      </div>
       <div className={styles.sidebar}>
         <TransactionForm uid={user.uid} />
       </div>
