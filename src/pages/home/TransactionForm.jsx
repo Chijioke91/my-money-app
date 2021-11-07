@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import useAddDoc from '../../hooks/useFirestore';
 
-export default function TransactionForm() {
+export default function TransactionForm({ uid }) {
   const [formData, setFormData] = useState({
     name: '',
     amount: '',
@@ -8,12 +9,22 @@ export default function TransactionForm() {
 
   const { name, amount } = formData;
 
+  const { mutate: addDocument } = useAddDoc('transactions');
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.id]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    addDocument(
+      { uid, ...formData },
+      {
+        onSuccess: () => {
+          setFormData({ name: '', amount: '' });
+        },
+      }
+    );
   };
 
   return (

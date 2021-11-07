@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
+import { RequireAuth } from './components/auth/RequireAuth';
 import Navbar from './components/navbar';
-import { RequireAuth } from './components/navbar/auth/RequireAuth';
 import useAuthContext from './hooks/useAuthContext';
 import Home from './pages/home';
 import Login from './pages/login';

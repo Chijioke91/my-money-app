@@ -1,10 +1,9 @@
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import useAuthContext from '../../../hooks/useAuthContext';
+import { Navigate, useLocation } from 'react-router-dom';
+import useAuthContext from '../../hooks/useAuthContext';
 
 export function RequireAuth({ children }) {
   let { user } = useAuthContext();
   let location = useLocation();
-  let navigate = useNavigate();
 
   if (!user) {
     // Redirect them to the /login page, but save the current location they were

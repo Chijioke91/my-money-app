@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     });
   }, []);
 
-  console.log('Auth context state', state);
+  // console.log('Auth context state', state);
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
